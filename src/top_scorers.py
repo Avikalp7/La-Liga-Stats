@@ -81,6 +81,7 @@ def find_goals(line):
 			goal_str += char
 	return goal_str
 
+
 def connect():
 	try:
 		r = requests.get(url_to_scrape) 
@@ -96,13 +97,37 @@ def connect():
 		connect()
 
 def top_assists(content):
-	index = 2400
-	for line in content[2400:]:
-		if line.find("Top assists") != -1:
-			assist_line = index
-		index += 1
+	print ""
+	podium = [" top ", " second highest ", " third highest "]
+	index = 2000
+	number_found = 0
+	
+	while  number_found < 3:
+		index = 2000
+		for line in content[2000:]:
+			if line.find("Top assists") != -1:
+				assist_line = index
+				break
+			index += 1
+
+		for line in content[assist_line:]:
+			if line.find("<td>" + str(number_found + 1) + "</td>") != -1:
+				name_line = content[index + 1]
+				end_index = name_line.find("</a></td>")
+				start_index = end_index
+				while name_line[start_index - 1] != ">":
+					start_index -= 1
+				name = name_line[start_index : end_index]
+				print name + " is the" + podium[number_found] + "assist provider."
+				assists = find_goals(content[index + 3])
+				print "Assists : " + str(assists)
+				number_found += 1
+				break
+			index += 1
+
 
 if __name__ == "__main__":
 	content = connect()
 	get_top_three_scorers(content)
-	key = raw_input("Press Enter to Exit")
+	top_assists(content)
+	# key = raw_input("Press Enter to Exit")
