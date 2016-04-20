@@ -15,14 +15,14 @@ def is_number(s):
     except ValueError:
         return False
 
-def get_top_three_scorers():
+def get_top_three_scorers(content):
 	"""
 	Prints the top three goal scorers in current La Liga season.
 	"""
 
 	index = 2000
 	top_goalscorers_index = 0
-	
+
 	for line in content[2000:3000]:
 		if line.find("<h3><span class=\"mw-headline\" id=\"Top_goalscorers\">Top goalscorers</span></h3>") != -1:
 			top_goalscorers_index = index
@@ -98,6 +98,7 @@ def connect():
 def top_assists():
 	pass
 
-
-get_top_three_scorers()
-key = raw_input("Press Enter to Exit")
+if __name__ == "__main__":
+	content = connect()
+	get_top_three_scorers(content)
+	key = raw_input("Press Enter to Exit")
