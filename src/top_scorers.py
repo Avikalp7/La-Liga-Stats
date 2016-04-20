@@ -95,7 +95,7 @@ def connect():
 		print "Retrying...."
 		connect()
 
-def top_assists():
+def top_assists(content):
 	pass
 
 if __name__ == "__main__":
