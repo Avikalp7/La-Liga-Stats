@@ -96,7 +96,11 @@ def connect():
 		connect()
 
 def top_assists(content):
-	pass
+	index = 2400
+	for line in content[2400:]:
+		if line.find("Top assists") != -1:
+			assist_line = index
+		index += 1
 
 if __name__ == "__main__":
 	content = connect()
