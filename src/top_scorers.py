@@ -138,4 +138,4 @@ if __name__ == "__main__":
 	content = connect("score.txt", 'https://en.wikipedia.org/wiki/2015-16_La_Liga#Top_goalscorers')
 	get_top_three_scorers(content)
 	get_top_three_assists(content)
-	#key = raw_input("Press Enter to Exit")
+	key = raw_input("Press Enter to Exit")
