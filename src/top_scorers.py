@@ -2,8 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-url_to_scrape = 'https://en.wikipedia.org/wiki/2015-16_La_Liga#Top_goalscorers'
-fname = "score.txt"
 
 def is_number(s):
     """
@@ -14,6 +12,22 @@ def is_number(s):
         return True
     except ValueError:
         return False
+
+
+def connect(fname, url_to_scrape):
+	try:
+		r = requests.get(url_to_scrape) 
+		soup = BeautifulSoup(r.text, "html.parser")
+		with open(fname, "w") as text_file:
+			text_file.write("{}".format(soup))
+		with open(fname) as f:
+			content = f.readlines()
+		return content
+	except Exception:
+		print "ConnectionError"
+		print "Retrying...."
+		connect()
+
 
 def get_top_three_scorers(content):
 	"""
@@ -74,29 +88,7 @@ def get_top_three_scorers(content):
 		index += 1
 
 
-def find_goals(line):
-	goal_str = ""
-	for char in line:
-		if is_number(char):
-			goal_str += char
-	return goal_str
-
-
-def connect():
-	try:
-		r = requests.get(url_to_scrape) 
-		soup = BeautifulSoup(r.text, "html.parser")
-		with open(fname, "w") as text_file:
-			text_file.write("{}".format(soup))
-		with open(fname) as f:
-			content = f.readlines()
-		return content
-	except Exception:
-		print "ConnectionError"
-		print "Retrying...."
-		connect()
-
-def top_assists(content):
+def get_top_three_assists(content):
 	print ""
 	podium = [" top ", " second highest ", " third highest "]
 	index = 2000
@@ -126,8 +118,18 @@ def top_assists(content):
 			index += 1
 
 
+def find_goals(line):
+	goal_str = ""
+	for char in line:
+		if is_number(char):
+			goal_str += char
+	return goal_str
+
+
+
+
 if __name__ == "__main__":
-	content = connect()
+	content = connect("score.txt", 'https://en.wikipedia.org/wiki/2015-16_La_Liga#Top_goalscorers')
 	get_top_three_scorers(content)
-	top_assists(content)
-	# key = raw_input("Press Enter to Exit")
+	get_top_three_assists(content)
+	key = raw_input("Press Enter to Exit")
